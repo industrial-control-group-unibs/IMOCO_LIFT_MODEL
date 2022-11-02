@@ -6,7 +6,7 @@ Assumption: the rope are consider viscous-elastic elements, using a lumped param
 
 The rope mass linearly depends on the rope length.
 
- 
+
 
 ## System input
 - _u_   motor torque
@@ -43,3 +43,9 @@ The rope mass linearly depends on the rope length.
 
 ## Initial conditions
 Assumption -> when x9=0 the cabin is in 0
+
+
+
+## Ack
+
+This work was partially supported by IMOCO4.E project (H2020-ECSEL, European Commission – G.A.101007311).
