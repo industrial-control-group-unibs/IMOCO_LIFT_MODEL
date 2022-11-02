@@ -12,7 +12,7 @@ MaxAcc=1;
 MaxVel=2;
 MaxJerk=40;
 
-LinearDamping=100;
+LinearDamping=3000;
 LinearStiffness=2100000;
 
 MotorViscousFriction=1;
@@ -25,20 +25,17 @@ u=0;
 dc=0;
 dw=0;
 
-DesiredCabinPosition=00; %meter
-x9_nominal=DesiredCabinPosition/Rp/gearbox;
-
+DesiredCabinPosition=0; %meter
 
 [x_eq,u_eq] = LiftEquilibrium(BuildingHeight,LinearStiffness,Mc,Mw,Rp,dc,dw,g,gearbox,min_length,mu,DesiredCabinPosition);
-x_eq(1:2:9)
+
 
 x0=x_eq;
 f=@(t,x)LiftDynamicsEquation(u_eq,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,x);
 
 
 [A,B] = LiftLinearSystem(BuildingHeight,Jm,Jp,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,dc,dw,g,gearbox,min_length,mu,x_eq(9));
-poli=eig(A)
-
+poli=eig(A);
 
 C=[0 0 0 0 0 0 0 0 0 1]; % velocity control
 %C=[0 0 0 0 0 0 0 0 1 0]; % position control

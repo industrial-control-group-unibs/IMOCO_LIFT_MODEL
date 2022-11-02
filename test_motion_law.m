@@ -1,9 +1,9 @@
 clear all;close all;clc;
-MaxAcc=2;
+MaxAcc=1;
 MaxJerk=2;
-MaxVel=2;
+MaxVel=1;
 
-distance=3;
+distance=30;
 
 if MaxVel>MaxAcc^2/(2*MaxJerk)
     %case 1
