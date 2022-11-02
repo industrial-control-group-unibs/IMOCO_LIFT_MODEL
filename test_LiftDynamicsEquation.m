@@ -1,5 +1,6 @@
 clear all;close all;clc
-
+addpath('NonLinearElasticModel')
+addpath('MotionLaw')
 floor_height=3;
 num_floors=20;
 BuildingHeight=num_floors*floor_height;
