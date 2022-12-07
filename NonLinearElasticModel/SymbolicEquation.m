@@ -98,7 +98,7 @@ f = [x(2);
 
 f=simplify(f);
 
-%% Compute equilibrium for a given x7
+%% Compute equilibrium for a given x9
 % velocity x2,x4,x6,x8,x10 are null at the equilibrium
 % position x1,x3,x5,x7 are unkwown, while x9 is given
 % ueq  is unkwown
