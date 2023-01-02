@@ -46,6 +46,6 @@ bode(sys)
 
 opt = pidtuneOptions('NumUnstablePoles',sum(real(poli)>0));
 
-wc=5;
-ctrl=pidtune(sys,'PIDF',wc,opt);
+wc=10;
 Ts=1e-3;
+ctrl=c2d(pidtune(sys,'PIDF',wc,opt),Ts);
