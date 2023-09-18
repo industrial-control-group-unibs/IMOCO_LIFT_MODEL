@@ -1,5 +1,4 @@
 %% PARAMETERS, STATE AND INPUTS
-addpath('..')
 % System input
 syms u  % motor torque
 syms dc % disturbance on the cabin side
@@ -13,8 +12,6 @@ syms Jm % inertia of the motor (and all the elements rigidly connected with it)
 syms gearbox % gearbox ratio (outer speed/inner speed)
 syms LinearStiffness % stiffness of 1 meter of rope
 syms LinearDamping % damping of 1 meter of rope
-syms K0 % minimal stiffness, represented but localized elasticy
-syms C0 % minimal damping, represented but localized viscity
 syms Rp  % radius of the pulley
 syms mu  % linear density (mass of a 1 meter of rope)
 syms BuildingHeight % movement range
@@ -68,18 +65,14 @@ nominal_x4=nominal_x2/2;
 lc=h_pulley-nominal_x7; % rope length on cabin side (ignoring spring deflection)
 lw=h_pulley-nominal_x1; % rope length on counterweight side  (ignoring spring deflection)
 
-Kc_variable=LinearStiffness/(lc/2); % stiffness of a half of rope on cabin side
-Kw_variable=LinearStiffness/(lw/2); % stiffness of a half of rope on counterweight side
-Kc=1/(1/K0+1/Kc_variable); % Kc_variable and K0 are in series
-Kw=1/(1/K0+1/Kw_variable); % Kw_variable and K0 are in series
+Kc=LinearStiffness/(lc/2); % stiffness of a half of rope on cabin side
+Kw=LinearStiffness/(lw/2); % stiffness of a half of rope on counterweight side
 
 m_rw=mu*lw; % rope mass on cabin side
 m_rc=mu*lc; % rope mass on cabin side
 
-Cc_variable=LinearDamping/(lc/2); % damping of a half of rope on cabin side
-Cw_variable=LinearDamping/(lw/2); % damping of a half of rope on counterweight side
-Cc=1/(1/C0+1/Cc_variable); % Kc_variable and K0 are in series
-Cw=1/(1/C0+1/Cw_variable); % Kw_variable and K0 are in series
+Cc=LinearDamping/(lc/2); % damping of a half of rope on cabin side
+Cw=LinearDamping/(lw/2); % damping of a half of rope on counterweight side
 
 
 F_pulley_rw=Kw*(nominal_x3-x(3))+Cw*(nominal_x4-x(4));
@@ -127,13 +120,13 @@ B = subs(jacobian(f,u),[x;u],[x_eq;u_eq]);
 A=simplify(A);
 B=simplify(B);
 
-variables=[u,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,K0,C0,x.'];
+variables=[u,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,x.'];
 comments='Version: 1.0';
 matlabFunction(f,'File','LiftDynamicsEquation.m','Vars',variables,'Comments',comments);
 
 
-variables_x9=[dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,K0,C0,x(9)];
-matlabFunction(x_eq,u_eq,'File','LiftEquilibrium.m','Vars',variables_x9,'Optimize',false,'Comments',comments);
-matlabFunction(A,B,'File','LiftLinearSystem.m','Vars',variables,'Optimize',false,'Comments',comments);
+variables_x9=[u,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,x(9)];
+matlabFunction(x_eq,u_eq,'File','LiftEquilibrium.m','Optimize',false,'Comments',comments);
+matlabFunction(A,B,'File','LiftLinearSystem.m','Optimize',false,'Comments',comments);
 
 vectorize_x('LiftDynamicsEquation.m')
