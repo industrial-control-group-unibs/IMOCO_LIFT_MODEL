@@ -114,11 +114,13 @@ u_eq = solution_eq.u;
 x_eq=simplify(x_eq);
 u_eq=simplify(u_eq);
 %% Linearization
+% Dx= A*x + B*u + B_dc *dc
 A = subs(jacobian(f,x),[x;u],[x_eq;u_eq]);
 B = subs(jacobian(f,u),[x;u],[x_eq;u_eq]);
-
+B_dc = subs(jacobian(f,dc),[x;u],[x_eq;u_eq]);
 A=simplify(A);
 B=simplify(B);
+B_dc=simplify(B_dc);
 
 variables=[u,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,x.'];
 comments='Version: 1.0';
@@ -127,6 +129,6 @@ matlabFunction(f,'File','LiftDynamicsEquation.m','Vars',variables,'Comments',com
 
 variables_x9=[u,dc,dw,BuildingHeight,Jp,Jm,LinearDamping,LinearStiffness,Mc,MotorViscousFriction,Mw,Rp,g,mu,gearbox,min_length,x(9)];
 matlabFunction(x_eq,u_eq,'File','LiftEquilibrium.m','Optimize',false,'Comments',comments);
-matlabFunction(A,B,'File','LiftLinearSystem.m','Optimize',false,'Comments',comments);
+matlabFunction(A,B,B_dc,'File','LiftLinearSystem.m','Optimize',false,'Comments',comments);
 
 vectorize_x('LiftDynamicsEquation.m')
